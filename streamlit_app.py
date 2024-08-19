@@ -122,11 +122,73 @@ if input_text:
     percent_fillers = df['fillers_share'].iloc[-1] * 100  # Convert to percentage
     
     # Print the information
-    st.write(f"Total Duration: {total_duration_str}")
-    st.write(f"Clean Duration (no silence): {clean_duration}")
-    st.write(f"Number of Unique Words (Vocabulary): {num_unique_words_value}")
-    st.write(f"Words per Minute (Pace): {words_per_minute:.1f}")
-    st.write(f"Max Pace: {max_pace:.1f}")
-    st.write(f"Min Pace: {min_pace:.1f}")
-    st.write(f"Percent of Fillers in Speech: {percent_fillers:.2f}%")
-    st.write(f"List of Fillers: {', '.join(filler_words)}")
+    st.write(f"**Total Duration:** {total_duration_str}")
+    st.write(f"**Clean Duration (no silence):** {clean_duration}")
+    st.write(f"**Number of Unique Words (Vocabulary):** {num_unique_words_value}")
+    st.write(f"**Words per Minute (Pace):** {words_per_minute:.1f}")
+    st.write(f"**Max Pace:** {max_pace:.1f}")
+    st.write(f"**Min Pace:** {min_pace:.1f}")
+    st.write(f"**Percent of Fillers in Speech:** {percent_fillers:.2f}%")
+    st.write(f"**List of Fillers:** {', '.join(filler_words)}")
+
+    # Setting up the Seaborn theme
+    sns.set_theme(style="darkgrid")
+    
+    # Create a 2x2 grid for the plots
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    
+    # Plot 1: Pace and Rolling Average Pace
+    sns.lineplot(ax=axes[0, 0], x='time', y='pace', data=df, color='royalblue', label='Pace')
+    # marker=False, linewidth=2.5, 
+    sns.lineplot(ax=axes[0, 0], x='time', y='rolling_avg_pace', data=df,  color='orange', label='Rolling Avg Pace')
+    # marker=False, linestyle='--', linewidth=2.5,
+    axes[0, 0].set_title('Pace and Rolling Average Pace Over Time', fontsize=16, weight='bold')
+    axes[0, 0].set_xlabel('Time', fontsize=12)
+    axes[0, 0].set_ylabel('Pace', fontsize=12)
+    axes[0, 0].legend()
+    
+    # Plot 2: Number of Unique Words Over Time
+    sns.lineplot(ax=axes[0, 1], x='time', y='num_unique_words', data=df, color='teal')
+    # marker='o', linewidth=2.5, 
+    axes[0, 1].set_title('Number of Unique Words Over Time', fontsize=16, weight='bold')
+    axes[0, 1].set_xlabel('Time', fontsize=12)
+    axes[0, 1].set_ylabel('Number of Unique Words', fontsize=12)
+    
+    # Plot 3: Filler Word Share Over Time
+    sns.lineplot(ax=axes[1, 0], x='time', y='fillers_share', data=df, color='coral')
+    # marker='o', linewidth=2.5, 
+    axes[1, 0].set_title('Filler Word Share Over Time', fontsize=16, weight='bold')
+    axes[1, 0].set_xlabel('Time', fontsize=12)
+    axes[1, 0].set_ylabel('Filler Word Share', fontsize=12)
+    
+    def format_time(x, pos=None):
+        return x.strftime('%H:%M:%S')
+    
+    # Format x-ticks to show only the time (H:M:S)
+    axes[1, 0].xaxis.set_major_formatter(FuncFormatter(lambda x, _: mdates.num2date(x).strftime('%H:%M:%S')))
+    axes[0, 0].xaxis.set_major_formatter(FuncFormatter(lambda x, _: mdates.num2date(x).strftime('%H:%M:%S')))
+    axes[0, 1].xaxis.set_major_formatter(FuncFormatter(lambda x, _: mdates.num2date(x).strftime('%H:%M:%S')))
+    
+    # Rotate x-tick labels
+    # plt.setp(axes[1, 0].get_xticklabels(), rotation=45, ha='right')
+    # plt.setp(axes[0, 0].get_xticklabels(), rotation=45, ha='right')
+    # plt.setp(axes[0, 1].get_xticklabels(), rotation=45, ha='right')
+    
+    
+    # Plot 4: Word Cloud of Unique Words
+    # Combine all text into one string
+    all_text = ' '.join(df['text'])
+    
+    # Generate the Word Cloud with a larger size
+    wordcloud = WordCloud(width=900, height=600, background_color='white').generate(all_text)
+    
+    # Display the Word Cloud in the bottom right subplot
+    axes[1, 1].imshow(wordcloud, interpolation='bilinear')
+    axes[1, 1].axis('off')  # Hide axes
+    axes[1, 1].set_title('Word Cloud of Unique Words', fontsize=16, weight='bold')
+    
+    # Adjust layout to avoid overlap
+    plt.tight_layout()
+
+    # Display the plots
+    st.pyplot(fig)
