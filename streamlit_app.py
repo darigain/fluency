@@ -30,4 +30,103 @@ if input_text:
         return lines
     
     lines = correct_list(pre_lines)
-    st.write(f"**List:** {lines}")
+    # Initializing lists to hold the data
+    time_stamps = []
+    texts = []
+    word_counts = []
+    durations = []
+    num_fillers = []
+    # List of filler words
+    filler_words = ['uh', 'um']
+    unique_words = set()  # Set to hold unique words
+    num_unique_words = []
+    
+    # Processing the lines
+    for i in range(0, len(lines), 2):
+        time_str = lines[i]
+        text = lines[i+1]
+        # Convert time to datetime object
+        if len(time_str.split(':'))==2:
+            time_obj = datetime.strptime('00:' + time_str, '%H:%M:%S')
+        else:
+            time_obj = datetime.strptime(time_str, '%H:%M:%S')
+        # Count the number of words
+        text = re.sub(r'\[.*?\]', '', text)  # Remove words in square brackets
+        word_count = len(text.split())
+    
+        # Count the number of filler words
+        filler_count = sum(text.split().count(filler) for filler in filler_words)
+    
+        # Add words to the set of unique words
+        words_in_text = text.split()
+        unique_words.update(words_in_text)
+        
+        # Append the data to lists
+        time_stamps.append(time_obj)
+        texts.append(text)
+        word_counts.append(word_count)
+        num_fillers.append(filler_count)
+        num_unique_words.append(len(unique_words))
+    
+        # Calculate duration between current and previous timestamp
+        if i >= len(lines)-2:
+            durations.append(0)  # No previous segment for the first one
+        else:
+            if len(lines[i+2].split(':'))==2:
+                next_time_obj = datetime.strptime('00:' + lines[i+2], '%H:%M:%S')
+            else:
+                next_time_obj = datetime.strptime(lines[i+2], '%H:%M:%S')
+            duration = (next_time_obj - time_obj).seconds
+            durations.append(duration)
+    
+    # Creating the DataFrame
+    df = pd.DataFrame({
+        'time': time_stamps,
+        'text': texts,
+        'num_words': word_counts,
+        'num_fillers': num_fillers,
+        'duration': durations,
+        'num_unique_words': num_unique_words
+    })
+    df['duration_clean'] = df.apply(lambda row: row['duration'] if 0 < row['duration'] <= (row['num_words'] + 3) else (row['num_words']*1), axis=1)
+    df['cumulative_num_fillers'] = df['num_fillers'].cumsum()
+    df['cumulative_num_words'] = df['num_words'].cumsum()
+    df['cumulative_duration_clean'] = df['duration_clean'].cumsum()
+    df['pace']=df['cumulative_num_words']/df['cumulative_duration_clean'] * 60.0
+    df['fillers_share']=df['cumulative_num_fillers']/df['cumulative_num_words']
+    df['rolling_avg_pace'] = df['num_words'].rolling(window=12).mean() / df['duration_clean'].rolling(window=12).mean() * 60.0
+
+    # Total duration
+    total_duration = df['time'].iloc[-1] - df['time'].iloc[0]
+    total_duration_str = str(total_duration)
+    if "days" in total_duration_str:
+        total_duration_str = total_duration_str.split("days")[1]  # Remove the "0 days" part
+    
+    # Clean duration (no silence)
+    clean_duration_seconds = int(df['cumulative_duration_clean'].iloc[-1])
+    clean_duration = timedelta(seconds=clean_duration_seconds)
+    
+    # Number of unique words (vocabulary)
+    num_unique_words_value = df['num_unique_words'].iloc[-1]
+    
+    # Words per minute (pace)
+    words_per_minute = df['pace'].iloc[-1]
+    
+    # Max pace
+    max_pace = df['rolling_avg_pace'].max()
+    
+    # Min pace
+    min_pace = df['rolling_avg_pace'].min()
+    
+    # Percent of fillers in speech
+    percent_fillers = df['fillers_share'].iloc[-1] * 100  # Convert to percentage
+    
+    # Print the information
+    st.write(f"Total Duration: {total_duration_str}")
+    st.write(f"Clean Duration (no silence): {clean_duration}")
+    st.write(f"Number of Unique Words (Vocabulary): {num_unique_words_value}")
+    st.write(f"Words per Minute (Pace): {words_per_minute:.1f}")
+    st.write(f"Max Pace: {max_pace:.1f}")
+    st.write(f"Min Pace: {min_pace:.1f}")
+    st.write(f"Percent of Fillers in Speech: {percent_fillers:.2f}%")
+    st.write(f"List of Fillers: {', '.join(filler_words)}")
