@@ -207,7 +207,7 @@ if input_text:
         ],
         "Value": [
             total_duration_str,
-            str(clean_duration),
+            clean_duration,
             num_unique_words_value,
             f"{words_per_minute:.1f}",
             f"{max_pace:.1f}",
@@ -218,6 +218,6 @@ if input_text:
     }
     
     info_df = pd.DataFrame(info_data)
-    
+    info_df.reset_index()
     # Display the table
     st.table(info_df)
