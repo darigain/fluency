@@ -13,7 +13,7 @@ st.title("YouTube Subtitles Analysis Tool")
 st.write("")  # Adds a blank line (space)
 multi = '''**Objective:** To improve personal English skills by uploading videos to YouTube, transcribing them, and comparing the transcriptions to reference materials.
 
-You can open a YouTube video, go to ***More*** select ***Show transcript*** and then copy it.
+You can open a YouTube video, go to ***More***, select ***Show transcript***, and then copy it.
 '''
 st.markdown(multi)
 st.write("")  # Adds a blank line (space)
