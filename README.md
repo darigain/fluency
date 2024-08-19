@@ -1,6 +1,11 @@
 # YouTube Subtitles Analysis Tool
 
-# https://youtube-sub-tool.streamlit.app/
+---
+<h3 align="center">
+    🎈 Try it out here: <a href="https://youtube-sub-tool.streamlit.app/">YouTube Subtitles Analysis Tool 🎈 </a>
+</h3>
+
+---
 
 ## Objective
 
