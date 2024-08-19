@@ -10,10 +10,11 @@ import streamlit as st
 
 # Streamlit app structure
 st.title("Speech Analysis Tool")
+st.write("")  # Adds a blank line (space)
 st.text("You can open YouTube video -> more -> Show transcript -> copy it")
-# Text input
+st.write("")  # Adds a blank line (space)
 input_text = st.text_area("Enter your text with timestamps:", height=200)
-
+st.write("")  # Adds a blank line (space)
 if input_text:
     pre_lines = input_text.strip().split('\n')
     # Check if the current element is in time format (numbers separated by colons)
@@ -220,4 +221,5 @@ if input_text:
     info_df = pd.DataFrame(info_data)
     # Display the table
     # st.table(info_df)
+    st.write("")  # Adds a blank line (space)
     st.write(info_df.to_html(index=False), unsafe_allow_html=True)
