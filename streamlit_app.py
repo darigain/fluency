@@ -227,3 +227,4 @@ if input_text:
     # st.table(info_df)
     st.write("")  # Adds a blank line (space)
     st.write(info_df.to_html(index=False), unsafe_allow_html=True)
+st.markdown("More infos and :star: at github.com/darigain/youtube_subs_analysis")
