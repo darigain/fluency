@@ -218,6 +218,6 @@ if input_text:
     }
     
     info_df = pd.DataFrame(info_data)
-    info_df.reset_index()
     # Display the table
-    st.table(info_df)
+    # st.table(info_df)
+    st.write(info_df.to_html(index=False), unsafe_allow_html=True)
