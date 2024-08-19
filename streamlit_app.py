@@ -122,20 +122,20 @@ if input_text:
     percent_fillers = df['fillers_share'].iloc[-1] * 100  # Convert to percentage
     
     # Print the information
-    st.write(f"**Total Duration:** {total_duration_str}")
-    st.write(f"**Clean Duration (no silence):** {clean_duration}")
-    st.write(f"**Number of Unique Words (Vocabulary):** {num_unique_words_value}")
-    st.write(f"**Words per Minute (Pace):** {words_per_minute:.1f}")
-    st.write(f"**Max Pace:** {max_pace:.1f}")
-    st.write(f"**Min Pace:** {min_pace:.1f}")
-    st.write(f"**Percent of Fillers in Speech:** {percent_fillers:.2f}%")
-    st.write(f"**List of Fillers:** {', '.join(filler_words)}")
+    # st.write(f"**Total Duration:** {total_duration_str}")
+    # st.write(f"**Clean Duration (no silence):** {clean_duration}")
+    # st.write(f"**Number of Unique Words (Vocabulary):** {num_unique_words_value}")
+    # st.write(f"**Words per Minute (Pace):** {words_per_minute:.1f}")
+    # st.write(f"**Max Pace:** {max_pace:.1f}")
+    # st.write(f"**Min Pace:** {min_pace:.1f}")
+    # st.write(f"**Percent of Fillers in Speech:** {percent_fillers:.2f}%")
+    # st.write(f"**List of Fillers:** {', '.join(filler_words)}")
 
     # Setting up the Seaborn theme
     sns.set_theme(style="darkgrid")
     
     # Create a 2x2 grid for the plots
-    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    fig, axes = plt.subplots(2, 2, figsize=(18, 14))
     
     # Plot 1: Pace and Rolling Average Pace
     sns.lineplot(ax=axes[0, 0], x='time', y='pace', data=df, color='royalblue', label='Pace')
@@ -208,7 +208,7 @@ if input_text:
         "Value": [
             total_duration_str,
             str(clean_duration),
-            num_unique_words,
+            num_unique_words_value,
             f"{words_per_minute:.1f}",
             f"{max_pace:.1f}",
             f"{min_pace:.1f}",
