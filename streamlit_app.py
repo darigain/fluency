@@ -11,13 +11,11 @@ import streamlit as st
 # Streamlit app structure
 st.title("YouTube Subtitles Analysis Tool")
 st.write("")  # Adds a blank line (space)
-# st.text("Objective: To improve personal English skills by uploading videos to YouTube, transcribing them, and comparing the transcriptions to reference materials.")
-multi = '''**Objective:** To improve personal English skills by uploading videos to YouTube, 
-transcribing them, and comparing the transcriptions to reference materials.
+multi = '''**Objective:** To improve personal English skills by uploading videos to YouTube, transcribing them, and comparing the transcriptions to reference materials.
+
+You can open a YouTube video, go to ***More*** select ***Show transcript*** and then copy it.
 '''
 st.markdown(multi)
-st.write("")  # Adds a blank line (space)
-st.text("You can open a YouTube video, go to ***More*** select ***Show transcript*** and then copy it.")
 st.write("")  # Adds a blank line (space)
 input_text = st.text_area("Enter your text with timestamps:", height=200)
 st.write("")  # Adds a blank line (space)
