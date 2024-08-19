@@ -1,5 +1,7 @@
 # YouTube Subtitles Analysis Tool
 
+# https://youtube-sub-tool.streamlit.app/
+
 ## Objective
 
 The YouTube Subtitles Analysis Tool is designed to help improve personal English skills by analyzing YouTube video subtitles. This tool allows users to upload their videos to YouTube, transcribe the audio, and then compare the transcriptions to reference materials for analysis and improvement.
@@ -21,7 +23,7 @@ The YouTube Subtitles Analysis Tool is designed to help improve personal English
    - Copy the transcript to use with this tool.
 
 3. **Analyze the Transcription:**
-   - Click on the provided link.
+   - Click on the provided link https://youtube-sub-tool.streamlit.app/
    - Paste the copied transcript into the tool.
    - Use the provided features to analyze and compare the transcription against reference materials.
 
