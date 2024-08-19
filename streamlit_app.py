@@ -192,3 +192,32 @@ if input_text:
 
     # Display the plots
     st.pyplot(fig)
+
+    # Create a DataFrame to display the information in a table
+    info_data = {
+        "Metric": [
+            "Total Duration",
+            "Clean Duration (no silence)",
+            "Number of Unique Words (Vocabulary)",
+            "Words per Minute (Pace)",
+            "Max Pace",
+            "Min Pace",
+            "Percent of Fillers in Speech",
+            "List of Fillers"
+        ],
+        "Value": [
+            total_duration_str,
+            str(clean_duration),
+            num_unique_words,
+            f"{words_per_minute:.1f}",
+            f"{max_pace:.1f}",
+            f"{min_pace:.1f}",
+            f"{percent_fillers:.2f}%",
+            ', '.join(filler_words)
+        ]
+    }
+    
+    info_df = pd.DataFrame(info_data)
+    
+    # Display the table
+    st.table(info_df)
