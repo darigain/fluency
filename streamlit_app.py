@@ -229,4 +229,6 @@ if input_text:
     st.write(info_df.to_html(index=False), unsafe_allow_html=True)
     st.write("")  # Adds a blank line (space)
     st.write("")  # Adds a blank line (space)
-    st.markdown("More infos and :star: at github.com/darigain/youtube_subs_analysis")
+    st.markdown(
+        "More infos and :star: at [github.com/darigain/youtube_subs_analysis](https://github.com/darigain/youtube_subs_analysis)"
+    )
