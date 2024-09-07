@@ -147,7 +147,7 @@ if input_text:
     sns.set_theme(style="darkgrid")
 
     # Create a 2x2 grid for the plots
-    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    fig, axes = plt.subplots(2, 2, figsize=(20, 16))
 
     # Plot 1: Pace and Rolling Average Pace
     sns.lineplot(ax=axes[0, 0], x='time', y='pace', data=df, color='black')
