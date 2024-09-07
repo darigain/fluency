@@ -2,7 +2,7 @@
 
 ---
 <h3 align="center">
-    🎈 Try it out here: <a href="https://youtube-sub-tool.streamlit.app/">YouTube Subtitles Analysis Tool 🎈 </a>
+    🎈 Try it out here: <a href="https://fluency.streamlit.app/">YouTube Subtitles Analysis Tool 🎈 </a>
 </h3>
 
 ---
@@ -28,7 +28,7 @@ The YouTube Subtitles Analysis Tool is designed to help improve personal English
    - Copy the transcript to use with this tool.
 
 3. **Analyze the Transcription:**
-   - Click on the provided link https://youtube-sub-tool.streamlit.app/
+   - Click on the provided link https://fluency.streamlit.app/
    - Paste the copied transcript into the tool.
    - Use the provided features to analyze and compare the transcription against reference materials.
 
