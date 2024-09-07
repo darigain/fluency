@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.ticker import FuncFormatter
 from datetime import timedelta, datetime
+from scipy.interpolate import interp1d
+import numpy as np
 import streamlit as st
 
 # Streamlit app structure
