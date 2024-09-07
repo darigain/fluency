@@ -17,6 +17,10 @@ You can open a YouTube video, go to ***More***, select ***Show transcript***, an
 '''
 st.markdown(multi)
 st.write("")  # Adds a blank line (space)
+st.markdown(
+    "More infos and :star: at [github.com/darigain/youtube_subs_analysis](https://github.com/darigain/youtube_subs_analysis)"
+)
+st.write("")  # Adds a blank line (space)
 input_text = st.text_area("Enter your text with timestamps:", height=200)
 st.write("")  # Adds a blank line (space)
 if input_text:
@@ -138,60 +142,121 @@ if input_text:
 
     # Setting up the Seaborn theme
     sns.set_theme(style="darkgrid")
-    
+
     # Create a 2x2 grid for the plots
-    fig, axes = plt.subplots(2, 2, figsize=(18, 14))
-    
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+
     # Plot 1: Pace and Rolling Average Pace
-    sns.lineplot(ax=axes[0, 0], x='time', y='pace', data=df, color='royalblue', label='Pace')
-    # marker=False, linewidth=2.5, 
-    sns.lineplot(ax=axes[0, 0], x='time', y='rolling_avg_pace', data=df,  color='orange', label='Rolling Avg Pace')
-    # marker=False, linestyle='--', linewidth=2.5,
-    axes[0, 0].set_title('Pace and Rolling Average Pace Over Time', fontsize=16, weight='bold')
+    sns.lineplot(ax=axes[0, 0], x='time', y='pace', data=df, color='black')
+    # marker=False, linewidth=2.5, color='royalblue', label='Pace'
+    sns.lineplot(ax=axes[0, 0], x='time', y='rolling_avg_pace', data=df,  color='gray', linestyle=':')
+    # marker=False, linestyle='--', linewidth=2.5, color='orange', label='Rolling Avg Pace'
+    axes[0, 0].set_title('Cumulative pace and moving average with a one-minute window', fontsize=14, weight='bold')
     axes[0, 0].set_xlabel('Time', fontsize=12)
-    axes[0, 0].set_ylabel('Pace', fontsize=12)
-    axes[0, 0].legend()
-    
+    axes[0, 0].set_ylabel('Words per minute', fontsize=12)
+    # axes[0, 0].legend()
+    # axes[0, 0].legend(loc='center', bbox_to_anchor=(0.85, 0.85), frameon=False)
+
+    wpm_data = {
+        "CEFR Level": ["A1", "A2", "B1", "B2", "C1", "C2", "Rap God"],
+        "Average WPM": [30, 50, 75, 105, 135, 165, 257]
+    }
+
+    colors = sns.color_palette("Oranges", len(wpm_data["Average WPM"]))
+
+    for i, (level, wpm) in enumerate(zip(wpm_data["CEFR Level"], wpm_data["Average WPM"])):
+        axes[0, 0].axhline(y=wpm, color=colors[i], linestyle='-', label=f'{level} - {wpm} WPM')
+        axes[0, 0].text(x=df['time'].max(), y=wpm, s=f'{level} - {wpm} WPM', 
+                        color=colors[i], va='bottom')
+    # axes[0, 0].legend(loc='upper left', bbox_to_anchor=(1, 1))
+
     # Plot 2: Number of Unique Words Over Time
-    sns.lineplot(ax=axes[0, 1], x='time', y='num_unique_words', data=df, color='teal')
-    # marker='o', linewidth=2.5, 
-    axes[0, 1].set_title('Number of Unique Words Over Time', fontsize=16, weight='bold')
+    # ________________________________________________________________________
+    # Data for the native English teacher
+    teacher_data_minutes = np.array([0, 5, 10, 15, 20, 30, 60, 120, 180])
+    teacher_data_words = np.array([0, 318, 500, 638, 767, 1000, 1450, 2250, 2800])
+
+    # Create an interpolation function based on the teacher's data
+    interpolate_teacher = interp1d(teacher_data_minutes, teacher_data_words, kind='cubic')
+
+    # Define the monologue lengths for plotting
+    monologue_lengths_fine = np.linspace(0, 180, 100)
+
+    # Convert minutes to datetime for alignment with the original plot's x-axis
+    base_time = pd.to_datetime("1900-01-01 00:00:00")
+    time_as_datetime = [base_time + pd.Timedelta(minutes=m) for m in monologue_lengths_fine]
+
+    # Define scaling factors for each CEFR level based on expected differences
+    scaling_factors = {
+        "A1": 0.2,
+        "A2": 0.3,
+        "B1": 0.4,
+        "B2": 0.6,
+        "C1": 0.8,
+        "C2": 1.0,
+        "Rap God": 2.0, 
+    }
+
+    # Get the min and max time from the original data
+    min_time = df['time'].min()
+    max_time = df['time'].max()
+
+    # Filter the interpolated curves to match the original x-axis time range
+    time_as_datetime_filtered = [t for t in time_as_datetime if min_time <= t <= max_time]
+    monologue_lengths_filtered = [m for t, m in zip(time_as_datetime, monologue_lengths_fine) if min_time <= t <= max_time]
+
+    # Use the "Oranges" color palette for the lines
+    colors = sns.color_palette("Oranges", len(scaling_factors))
+
+    sns.lineplot(ax=axes[0, 1], x='time', y='num_unique_words', data=df, color='black')
+    # marker='o', linewidth=2.5,
+    axes[0, 1].set_title('Number of unique words over time (vocabulary)', fontsize=14, weight='bold')
     axes[0, 1].set_xlabel('Time', fontsize=12)
-    axes[0, 1].set_ylabel('Number of Unique Words', fontsize=12)
-    
+    axes[0, 1].set_ylabel('Unique Words', fontsize=12)
+
+    # Add interpolated curves for each CEFR level, aligning time axis to original datetime x-axis
+    for i, (level, scale) in enumerate(scaling_factors.items()):
+        scaled_words = interpolate_teacher(monologue_lengths_filtered) * scale
+        # Apply color from the palette for each line
+        axes[0, 1].plot(time_as_datetime_filtered, scaled_words, label=level, linestyle='-', color=colors[i])
+
+        # Add text near each line to label them
+        axes[0, 1].text(time_as_datetime_filtered[-1], scaled_words[-1], f'{level}', color=colors[i], va='center')
+
+
+    # ________________________________________________________________________
     # Plot 3: Filler Word Share Over Time
-    sns.lineplot(ax=axes[1, 0], x='time', y='fillers_share', data=df, color='coral')
-    # marker='o', linewidth=2.5, 
-    axes[1, 0].set_title('Filler Word Share Over Time', fontsize=16, weight='bold')
+    sns.lineplot(ax=axes[1, 0], x='time', y='fillers_share', data=df, color='black')
+    # marker='o', linewidth=2.5,
+    axes[1, 0].set_title('Cumulative filler word share over time', fontsize=14, weight='bold')
     axes[1, 0].set_xlabel('Time', fontsize=12)
-    axes[1, 0].set_ylabel('Filler Word Share', fontsize=12)
-    
+    axes[1, 0].set_ylabel('Share', fontsize=12)
+
+    colors = sns.color_palette("Oranges", len(wpm_data["Average WPM"]))
+    axes[1, 0].axhline(y=0.2, color=colors[-1], linestyle='-', label='20% level')
+    axes[1, 0].text(x=df['time'].max(), y=0.2, s='20% level', 
+                        color=colors[-1], va='bottom')
+
     def format_time(x, pos=None):
         return x.strftime('%H:%M:%S')
-    
+
     # Format x-ticks to show only the time (H:M:S)
     axes[1, 0].xaxis.set_major_formatter(FuncFormatter(lambda x, _: mdates.num2date(x).strftime('%H:%M:%S')))
     axes[0, 0].xaxis.set_major_formatter(FuncFormatter(lambda x, _: mdates.num2date(x).strftime('%H:%M:%S')))
     axes[0, 1].xaxis.set_major_formatter(FuncFormatter(lambda x, _: mdates.num2date(x).strftime('%H:%M:%S')))
-    
-    # Rotate x-tick labels
-    # plt.setp(axes[1, 0].get_xticklabels(), rotation=45, ha='right')
-    # plt.setp(axes[0, 0].get_xticklabels(), rotation=45, ha='right')
-    # plt.setp(axes[0, 1].get_xticklabels(), rotation=45, ha='right')
-    
-    
+
     # Plot 4: Word Cloud of Unique Words
     # Combine all text into one string
     all_text = ' '.join(df['text'])
-    
+
     # Generate the Word Cloud with a larger size
     wordcloud = WordCloud(width=900, height=600, background_color='white').generate(all_text)
-    
+
     # Display the Word Cloud in the bottom right subplot
     axes[1, 1].imshow(wordcloud, interpolation='bilinear')
     axes[1, 1].axis('off')  # Hide axes
-    axes[1, 1].set_title('Word Cloud of Unique Words', fontsize=16, weight='bold')
-    
+    axes[1, 1].set_title('Word frequency', fontsize=14, weight='bold')
+
     # Adjust layout to avoid overlap
     plt.tight_layout()
 
@@ -222,7 +287,7 @@ if input_text:
         ]
     }
     
-    info_df = pd.DataFrame(info_data)
+    info_df = pd.DataFrame(info_data).T
     # Display the table
     # st.table(info_df)
     st.write("")  # Adds a blank line (space)
