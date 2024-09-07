@@ -116,6 +116,7 @@ if input_text:
     # Clean duration (no silence)
     clean_duration_seconds = int(df['cumulative_duration_clean'].iloc[-1])
     clean_duration = timedelta(seconds=clean_duration_seconds)
+    clean_duration_minutes = int(clean_duration_seconds/60.0)
     
     # Number of unique words (vocabulary)
     num_unique_words_value = df['num_unique_words'].iloc[-1]
@@ -269,17 +270,19 @@ if input_text:
     info_data = {
         "Metric": [
             "Total Duration",
-            "Clean Duration (no silence)",
-            "Number of Unique Words (Vocabulary)",
-            "Words per Minute (Pace)",
-            "Max Pace",
-            "Min Pace",
-            "Percent of Fillers in Speech",
+            "Speaking Duration",
+            "Minutes",
+            "Unique Words",
+            "WPM",
+            "Max WPM",
+            "Min WPM",
+            "Fillers Percentage",
             "List of Fillers"
         ],
         "Value": [
             total_duration_str,
             clean_duration,
+            clean_duration_minutes,
             num_unique_words_value,
             f"{words_per_minute:.1f}",
             f"{max_pace:.1f}",
