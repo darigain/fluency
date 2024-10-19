@@ -832,6 +832,36 @@ if input_text:
     st.write(f"**Language Level Range:** {language_level_range}")
 
     #############################################################
+    # Create a DataFrame to display the information in a table
+    info_data = {
+        "Metric": [
+            "Total Duration",
+            "Speaking Duration",
+            "Minutes",
+            "Unique Words",
+            "WPM",
+            "Level",
+            "Max WPM",
+            "Min WPM",
+            "Fillers Percentage",
+            "List of Fillers"
+        ],
+        "Value": [
+            total_duration_str,
+            clean_duration,
+            clean_duration_minutes,
+            num_unique_words_value,
+            f"{words_per_minute:.1f}",
+            language_level_range,
+            f"{max_pace:.1f}",
+            f"{min_pace:.1f}",
+            f"{percent_fillers:.2f}%",
+            ', '.join(filler_words)
+        ]
+    }
+    
+    info_df = pd.DataFrame(info_data).T
+    
     st.write("")  # Adds a blank line (space)
     st.write(info_df.to_html(index=False), unsafe_allow_html=True)
     st.write("")  # Adds a blank line (space)
