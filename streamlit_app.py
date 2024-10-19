@@ -558,6 +558,7 @@ if input_text:
             time_obj = datetime.strptime(time_str, '%H:%M:%S')
         # Count the number of words
         text = re.sub(r'\[.*?\]', '', text)  # Remove words in square brackets
+        text = re.sub(r'\(.*?\)', '', text)  # Remove words in round brackets
         word_count = len(text.split())
     
         # Count the number of filler words
