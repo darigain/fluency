@@ -825,7 +825,8 @@ if input_text:
     
     max_level = max(get_vocab_cefr_level(num_unique_words_value, clean_duration_minutes), 
                     get_cefr_level(words_per_minute, wpm_levels))
-    
+    if max_level == "Rap God":
+        max_level = "Native"
     # Output the language level range in the format "A2 - B1"
     language_level_range = f"{min_level} - {max_level}"
     st.write(f"**Language Level Range:** {language_level_range}")
