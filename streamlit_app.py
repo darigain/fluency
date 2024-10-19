@@ -792,9 +792,45 @@ if input_text:
     # Display the table
     # st.table(info_df)
     st.write("")  # Adds a blank line (space)
+    #############################################################
+
+    # Function to map unique words to CEFR level based on the interpolation
+    def get_vocab_cefr_level(num_unique_words, duration_minutes):
+        scaled_vocab = {level: interpolate_teacher(duration_minutes) * scale for level, scale in scaling_factors.items()}
+        for level, vocab_threshold in scaled_vocab.items():
+            if num_unique_words <= vocab_threshold:
+                return level
+        return "C2"  # Default to C2 if beyond the range
+    
+    # Define CEFR levels for words per minute (WPM)
+    wpm_levels = {
+        "A1": 30,
+        "A2": 50,
+        "B1": 75,
+        "B2": 105,
+        "C1": 135,
+        "C2": 165
+    }
+    
+    # Function to map WPM to CEFR level
+    def get_cefr_level(value, levels_dict):
+        for level, threshold in levels_dict.items():
+            if value <= threshold:
+                return level
+        return "C2"  # Highest level
+    
+    # Calculate the minimum and maximum levels for num_unique_words_value and words_per_minute
+    min_level = min(get_vocab_cefr_level(num_unique_words_value, clean_duration_minutes), 
+                    get_cefr_level(words_per_minute, wpm_levels))
+    
+    max_level = max(get_vocab_cefr_level(num_unique_words_value, clean_duration_minutes), 
+                    get_cefr_level(words_per_minute, wpm_levels))
+    
+    # Output the language level range in the format "A2 - B1"
+    language_level_range = f"{min_level} - {max_level}"
+    st.write(f"**Language Level Range:** {language_level_range}")
+
+    #############################################################
+    st.write("")  # Adds a blank line (space)
     st.write(info_df.to_html(index=False), unsafe_allow_html=True)
     st.write("")  # Adds a blank line (space)
-    st.write("")  # Adds a blank line (space)
-    st.markdown(
-        "More infos and :star: at [github.com/darigain/youtube_subs_analysis](https://github.com/darigain/youtube_subs_analysis)"
-    )
