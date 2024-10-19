@@ -16,7 +16,7 @@ side_text = '''A bit about me—I'm Aidar, a data analyst, and I built this app 
 
 If you have any privacy concerns, feel free to review the source code on GitHub:
 
-:star: [github.com/darigain/youtube_subs_analysis](https://github.com/darigain/youtube_subs_analysis) :star:
+:star: [github.com/darigain](https://github.com/darigain/youtube_subs_analysis) :star:
 '''
 st.sidebar.write(side_text)
 
