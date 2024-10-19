@@ -749,7 +749,7 @@ if input_text:
     all_text = ' '.join(df['text'])
 
     # Generate the Word Cloud with a larger size
-    wordcloud = WordCloud(width=900, height=900, background_color='white').generate(all_text)
+    wordcloud = WordCloud(width=1200, height=900, background_color='white').generate(all_text)
 
     # Display the Word Cloud in the bottom right subplot
     axes[1, 1].imshow(wordcloud, interpolation='bilinear')
