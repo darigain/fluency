@@ -800,7 +800,7 @@ if input_text:
         for level, vocab_threshold in scaled_vocab.items():
             if num_unique_words <= vocab_threshold:
                 return level
-        return "C2"  # Default to C2 if beyond the range
+        return "Native"
     def min_get_vocab_cefr_level(num_unique_words, duration_minutes):
         scaled_vocab = {level: interpolate_teacher(duration_minutes) * scale for level, scale in scaling_factors.items()}
         for level, vocab_threshold in scaled_vocab.items():
@@ -825,7 +825,7 @@ if input_text:
         for level, threshold in levels_dict.items():
             if value <= threshold:
                 return level
-        return "C2"  # Highest level
+        return "Native"  # Highest level
     def min_get_cefr_level(value, levels_dict):
         for level, threshold in levels_dict.items():
             if value >= threshold:
