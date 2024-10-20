@@ -795,11 +795,19 @@ if input_text:
     #############################################################
 
     # Function to map unique words to CEFR level based on the interpolation
-    def get_vocab_cefr_level(num_unique_words, duration_minutes):
+    def max_get_vocab_cefr_level(num_unique_words, duration_minutes):
         scaled_vocab = {level: interpolate_teacher(duration_minutes) * scale for level, scale in scaling_factors.items()}
         for level, vocab_threshold in scaled_vocab.items():
             if num_unique_words <= vocab_threshold:
                 return level
+        return "C2"  # Default to C2 if beyond the range
+    def min_get_vocab_cefr_level(num_unique_words, duration_minutes):
+        scaled_vocab = {level: interpolate_teacher(duration_minutes) * scale for level, scale in scaling_factors.items()}
+        for level, vocab_threshold in scaled_vocab.items():
+            if num_unique_words >= vocab_threshold:
+                current_level = level
+            else:
+                return current_level
         return "C2"  # Default to C2 if beyond the range
     
     # Define CEFR levels for words per minute (WPM)
@@ -813,18 +821,25 @@ if input_text:
     }
     
     # Function to map WPM to CEFR level
-    def get_cefr_level(value, levels_dict):
+    def max_get_cefr_level(value, levels_dict):
         for level, threshold in levels_dict.items():
             if value <= threshold:
                 return level
         return "C2"  # Highest level
+    def min_get_cefr_level(value, levels_dict):
+        for level, threshold in levels_dict.items():
+            if value >= threshold:
+                current_level = level
+            else:
+                return current_level
+        return "C2"  # Highest level
     
     # Calculate the minimum and maximum levels for num_unique_words_value and words_per_minute
-    min_level = min(get_vocab_cefr_level(num_unique_words_value, clean_duration_minutes), 
-                    get_cefr_level(words_per_minute, wpm_levels))
+    min_level = min(min_get_vocab_cefr_level(num_unique_words_value, clean_duration_minutes), 
+                    min_get_cefr_level(words_per_minute, wpm_levels))
     
-    max_level = max(get_vocab_cefr_level(num_unique_words_value, clean_duration_minutes), 
-                    get_cefr_level(words_per_minute, wpm_levels))
+    max_level = max(max_get_vocab_cefr_level(num_unique_words_value, clean_duration_minutes), 
+                    max_get_cefr_level(words_per_minute, wpm_levels))
     if max_level == "Rap God":
         max_level = "Native"
     # Output the language level range in the format "A2 - B1"
