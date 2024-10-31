@@ -1,20 +1,16 @@
-# YouTube Subtitles Analysis Tool
+# Language Proficiency Assessment Tool: Analyze Your Fluency
 
 ---
 <h3 align="center">
-    🎈 Try it out here: <a href="https://fluency.streamlit.app/">YouTube Subtitles Analysis Tool 🎈 </a>
+    🎈 Try it out here: <a href="https://fluency.streamlit.app/">fluency.streamlit.app 🎈 </a>
 </h3>
 
 ---
 
 ## Objective
 
-The YouTube Subtitles Analysis Tool is designed to help improve personal English skills by analyzing YouTube video subtitles. This tool allows users to upload their videos to YouTube, transcribe the audio, and then compare the transcriptions to reference materials for analysis and improvement.
-
-## Features
-
-- **Transcription Analysis:** Compare the transcribed subtitles against reference texts to identify areas of improvement in language use, grammar, and vocabulary.
-- **Visual Insights:** Generate and visualize statistics on word usage, pacing, filler words, and more.
+With this tool, you can analyze your speech patterns, including your speaking speed and active vocabulary. After calculating these values, you'll also get an estimate of your language proficiency level based on CEFR standards. As a bonus, you'll receive a personalized Word Cloud and insights into how frequently you use filler words.
+To get started, open any YouTube video, click "More," select "Show transcript," and simply copy the text.
 
 ## How to Use
 
