@@ -1,3 +1,12 @@
+import streamlit as st
+
+st.set_page_config(
+    page_title="Fluency Assessment Tool",
+    page_icon="🗣",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 import pandas as pd
 import re
 from wordcloud import WordCloud
@@ -8,15 +17,7 @@ from matplotlib.ticker import FuncFormatter
 from datetime import timedelta, datetime
 from scipy.interpolate import interp1d
 import numpy as np
-import streamlit as st
 
-
-st.set_page_config(
-    page_title="Fluency Assessment Tool",
-    page_icon="🗣",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 # Add text to the left sidebar
 st.sidebar.title("Who and Why:")
