@@ -10,6 +10,14 @@ from scipy.interpolate import interp1d
 import numpy as np
 import streamlit as st
 
+
+st.set_page_config(
+    page_title="Fluency Assessment Tool",
+    page_icon="🗣",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 # Add text to the left sidebar
 st.sidebar.title("Who and Why:")
 side_text = '''A bit about me—I'm Aidar, a data analyst, and I built this app to track my own progress in language fluency. I believe it could be helpful for you, too! The app runs on Python, and you can check out the code on GitHub for full transparency.
