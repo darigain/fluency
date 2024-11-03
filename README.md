@@ -12,6 +12,9 @@
 With this tool, you can analyze your speech patterns, including your speaking speed and active vocabulary. After calculating these values, you'll also get an estimate of your language proficiency level based on CEFR standards. As a bonus, you'll receive a personalized Word Cloud and insights into how frequently you use filler words.
 To get started, open any YouTube video, click "More," select "Show transcript," and simply copy the text.
 
+## Watch the Tutorial
+  [![Alt text](https://img.youtube.com/vi/oBz555G0vvI/hqdefault.jpg)](https://youtu.be/oBz555G0vvI)
+
 ## How to Use
 
 1. **Upload a Video to YouTube:**
