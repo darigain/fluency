@@ -29,5 +29,5 @@ To get started, open any YouTube video, click "More," select "Show transcript," 
 3. **Analyze the Transcription:**
    - Click on the provided link https://fluency.streamlit.app/
    - Paste the copied transcript into the tool.
-   - Use the provided features to analyze and compare the transcription against reference materials.
+   - Get an estimate of your language proficiency level and gain additional insights through transcription analysis.
 
